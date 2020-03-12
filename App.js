@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Corono Morona!</Text>
+      <Text>Corona günlerinde aşk!</Text>
     </View>
   );
 }
