@@ -1,32 +1,22 @@
 import React from 'react';
 import CountdownCircle from 'react-native-countdown-circle';
-import { StyleSheet, Text, View, Image, TouchableHighlight, Button} from 'react-native';
-
+import { StyleSheet, View} from 'react-native';
+import Header from './components/Headers';
 import ImageTry from './components/ImageTry';
-var _state = { uri: require('./assets/2.jpeg') }
+import StartGameScreen from './screens/StartGameScreen';
 
 export default function App() {
   return (
-    <View style={styles.container}>
+
+    <View style={styles.screen}>
+      <Header title='Welcome to Game' />
       <ImageTry ></ImageTry>
     </View>
   );
 }
 
-
-
-function RndPhoto()
-{
-  
-  
-}
-
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  screen:{
+    flex:1
   }
 });
