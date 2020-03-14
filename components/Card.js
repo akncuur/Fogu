@@ -11,7 +11,7 @@ const Card= props => {
 const styles = StyleSheet.create({
     card:{
         width:400,
-        maxWidth: '100%',
+        maxWidth: '95%',
         alignItems: 'stretch',
         shadowColor: 'black',
         shadowOffset: {width: 0, height: 2},
@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         padding:0,
         borderRadius: 10,
-        flexDirection:'column',
       },
 
 });

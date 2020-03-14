@@ -107,6 +107,9 @@ export default class ImageTry extends Component {
 
       if(flag == 1)
       {
+        this.setState({
+          uri: customData.corona.imagesUK[0].pathOrjinal
+        });
         alert('Yes it s true');
       }
       else
@@ -121,6 +124,19 @@ export default class ImageTry extends Component {
     return (
       <View style={styles.screen}>
         <Card style={styles.inputContainer}>
+        <View style={{flexDirection:'row', justifyContent:'flex-end'}}>
+        <CountdownCircle
+            ref = {ref => this.countdown = ref}
+            seconds={this.state.time1}
+            radius={15}
+            borderWidth={5}
+            color="red"
+            bgColor="white"
+            textStyle={{ fontSize: 10 }}
+            restartAnimation={()=>this.start()}
+            onTimeElapsed={() => this.GameOver()}
+        />
+      </View>
        <TouchableHighlight underlayColor="white" onPress={() => this.UKAlertAskStartGame()}>
             <Image
                 source={{uri: this.state.uri}}
@@ -146,19 +162,7 @@ export default class ImageTry extends Component {
               </View>
           </TouchableOpacity>
           </View>
-          <View style={{flexDirection:'row', justifyContent:'flex-end'}}>
-        <CountdownCircle
-            ref = {ref => this.countdown = ref}
-            seconds={this.state.time1}
-            radius={30}
-            borderWidth={10}
-            color="red"
-            bgColor="white"
-            textStyle={{ fontSize: 18 }}
-            restartAnimation={()=>this.start()}
-            onTimeElapsed={() => this.GameOver()}
-        />
-      </View>
+         
         </Card>
       </View>
       
@@ -170,35 +174,38 @@ export default class ImageTry extends Component {
 const styles = StyleSheet.create({
     screen:{
         
-      marginTop:'10%',
-        padding: 10,
+        marginTop:'0%',
+        padding: 0,
         alignItems: 'center',
-        justifyContent:'space-between'
+        justifyContent:'center'
     },
     buttonContainer: {
-        paddingTop: 30,
+        paddingTop: '10%',
         alignItems: 'stretch'
     },
     button: {
-        marginBottom: 20,
+        marginBottom: '25%',
         alignItems: 'center',
       },
     
     btnOne:{
         borderRadius:20,
-        marginBottom: 20,
+        height: 50,
+        marginBottom: 5,
         alignItems: 'center',
         backgroundColor: '#2196F3'
     },
     btnTwo:{
         borderRadius:20,
-        marginBottom: 20,
+        height: 50,
+        marginBottom: 5,
         alignItems: 'center',
         backgroundColor: 'black'
     }, 
     btnThree:{
         borderRadius:20,
-        marginBottom: 20,
+        height: 50,
+        marginBottom: 5,
         alignItems: 'center',
         backgroundColor: '#841584'
     }, 
@@ -206,7 +213,7 @@ const styles = StyleSheet.create({
         
         color: 'white',
         textAlign:'center',
-        padding:20,
+        padding:10,
         fontSize:18,
     },
 
