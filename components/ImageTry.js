@@ -1,92 +1,167 @@
 import React, { Component } from 'react';
-import { View, Image,TouchableHighlight, StyleSheet, TouchableOpacity,Text } from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
-
+import { View, Image,TouchableHighlight, StyleSheet, TouchableOpacity,Text,Alert } from 'react-native';
 import Card from './Card';
+import CountdownCircle from 'react-native-countdown-circle';
+//import {NavigationContainer} from '@react-navigation/native';
+//import {createStackNavigator} from '@react-navigation/stack';
 
 
-var _state = { uri: require('../assets/2.jpeg') }
-var arrayPhoto= [require('../assets/1.jpeg'),
-                     require('../assets/2.jpeg'),
-                     require('../assets/3.jpg'),
-                     require('../assets/4.jpg'),
-                     require('../assets/5.jpg')];
+const customData = require('../assets/UKpath.json');
+var _time = 3;
 
-var btn1Name = 'Muz';
-var btn1Value = '1';
+var gameHealth = 3;
+
+var firstImage = customData.corona.imagesUK[0].pathShadow;
+
+function setGame()
+{
+  btn1Name=customData.corona.imagesUK[0].btns[0].btn1;
+  btn2Name=customData.corona.imagesUK[0].btns[1].btn2;
+  btn3Name=customData.corona.imagesUK[0].btns[2].btn3;
+
+  btn1Value=customData.corona.imagesUK[0].btns[0].value;
+  btn2Value=customData.corona.imagesUK[0].btns[1].value;
+  btn3Value=customData.corona.imagesUK[0].btns[2].value;
+
+  gameHealth = 3;
+  _time
+}
 
 
-var btn2Name = 'Portakal';
-var btn2Value = '0';
 
-
-var btn3Name = 'Çilek';
-var btn3Value = '0';
-
-
+var btn1Name = '';
+var btn1Value = '';
+var btn2Name = '';
+var btn2Value = '';
+var btn3Name = '';
+var btn3Value = '';
 
 export default class ImageTry extends Component {
   constructor(props) {
     super(props);
-    this.state = { uri: _state.uri, value: 15 }
-    
+    this.state = { uri: firstImage , time1: _time}
+    setGame();
   }
+  
+  UKAlertAskStartGame()
+  {
+    if(gameHealth > 0)
+  {
+    return;
+  }
+    Alert.alert(
+      'Play Again ?',
+      'My A',
+      [
+        {text: 'Yes', onPress: () => this.StartGame()},
+        {text: 'No', onPress:''},
+      ],
+      {cancelable: false},
+    );
+  }
+
+   UKAlert(Title,Comment,Func)
+  {
+    Alert.alert(
+      Title,
+      Comment,
+      [
+        {text: 'OK', onPress: () => this.countdown.restartCount()},
+      ],
+      {cancelable: false},
+    );
+  }
+
+  StartGame()
+  {
+    setGame();
+    this.countdown.restartCount();
+  }
+
+  GameOver()
+{
+  gameHealth--;
+  if(gameHealth <= 0)
+  {
+    this.UKAlertAskStartGame()
+    return;
+  }
+  this.UKAlert('No Answer!','You have '+gameHealth,this.countdown.restartCount)
+}
 
   changeLogo() {
     var rnd = Math.floor(Math.random() * 4);
     
     this.setState({
-      uri: arrayPhoto[rnd]
+      uri: customData.corona.imagesUK[0].pathOrjinal
     });
   }
 
-   btn1Click(a)
+  btnClick(flag)
     {
-        this.changeLogo();
-    }
+      if(gameHealth <= 0)
+      {
+        this.UKAlertAskStartGame();
+        return;
+      }
 
-    btn2Click(a)
-    {
-        this.changeLogo();
-    }
-
-    btn3Click(a)
-    {
-        this.changeLogo();
+      if(flag == 1)
+      {
+        alert('Yes it s true');
+      }
+      else
+      {
+        gameHealth--;
+        alert('wrong wrong!');
+      }
+        
     }
 
   render() {
     return (
       <View style={styles.screen}>
-          
         <Card style={styles.inputContainer}>
-       <TouchableHighlight underlayColor="white" onPress={() => this.changeLogo()}>
+       <TouchableHighlight underlayColor="white" onPress={() => this.UKAlertAskStartGame()}>
             <Image
-                source={this.state.uri}
+                source={{uri: this.state.uri}}
                 style={{width: '100%', height: 300}}
                 resizeMode={'center'}
             />
         </TouchableHighlight> 
 
         <View style={styles.buttonContainer}>
-          <TouchableHighlight underlayColor="white" onPress={()=> this.btn1Click(btn1Value)}>
+          <TouchableOpacity onPress={()=> this.btnClick(btn1Value)}>
             <View style={styles.btnOne}>
                 <Text style={styles.buttonText}>{btn1Name}</Text>
               </View>
-          </TouchableHighlight>
-          <TouchableOpacity onPress={()=> this.btn2Click(btn2Value)}>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=> this.btnClick(btn2Value)}>
             <View style={styles.btnTwo}> 
                 <Text style={styles.buttonText}>{btn2Name}</Text>
               </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=> this.btn3Click(btn3Value)}>
+          <TouchableOpacity onPress={()=> this.btnClick(btn3Value)}>
             <View style={styles.btnThree}>
                 <Text style={styles.buttonText}>{btn3Name}</Text>
               </View>
           </TouchableOpacity>
           </View>
+          <View style={{flexDirection:'row', justifyContent:'flex-end'}}>
+        <CountdownCircle
+            ref = {ref => this.countdown = ref}
+            seconds={this.state.time1}
+            radius={30}
+            borderWidth={10}
+            color="red"
+            bgColor="white"
+            textStyle={{ fontSize: 18 }}
+            restartAnimation={()=>this.start()}
+            onTimeElapsed={() => this.GameOver()}
+        />
+      </View>
         </Card>
       </View>
+      
     );
   }
 }
@@ -94,7 +169,8 @@ export default class ImageTry extends Component {
 
 const styles = StyleSheet.create({
     screen:{
-      
+        
+      marginTop:'10%',
         padding: 10,
         alignItems: 'center',
         justifyContent:'space-between'
