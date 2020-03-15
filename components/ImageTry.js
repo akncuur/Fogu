@@ -6,43 +6,54 @@ import CountdownCircle from 'react-native-countdown-circle';
 //import {createStackNavigator} from '@react-navigation/stack';
 
 
-var ImageRndIndex = 0;
+var _ImageRndIndex = 0;
+
+
 
 const customData = require('../assets/UKpath.json');
 var _time = 25;
 
 var gameHealth = 3;
 
-var firstImage = customData.corona.imagesUK[ImageRndIndex].pathShadow;
+var firstImage = customData.corona.imagesUK[_ImageRndIndex].pathShadow;
+
+var _btn1Name = '';
+var _btn1Value = '';
+var _btn2Name = '';
+var _btn2Value = '';
+var _btn3Name = '';
+var _btn3Value = '';
+
 
 function setGame()
 {
-  btn1Name=customData.corona.imagesUK[ImageRndIndex].btns[0].btn1;
-  btn2Name=customData.corona.imagesUK[ImageRndIndex].btns[1].btn2;
-  btn3Name=customData.corona.imagesUK[ImageRndIndex].btns[2].btn3;
 
-  btn1Value=customData.corona.imagesUK[ImageRndIndex].btns[0].value;
-  btn2Value=customData.corona.imagesUK[ImageRndIndex].btns[1].value;
-  btn3Value=customData.corona.imagesUK[ImageRndIndex].btns[2].value;
 
+  _btn1Name=customData.corona.imagesUK[_ImageRndIndex].btns[0].btn1,
+  _btn2Name=customData.corona.imagesUK[_ImageRndIndex].btns[1].btn2,
+  _btn3Name=customData.corona.imagesUK[_ImageRndIndex].btns[2].btn3,
+
+  _btn1Value=customData.corona.imagesUK[_ImageRndIndex].btns[0].value,
+  _btn2Value=customData.corona.imagesUK[_ImageRndIndex].btns[1].value,
+  _btn3Value=customData.corona.imagesUK[_ImageRndIndex].btns[2].value
   gameHealth = 3;
   _time = 25;
 }
 
-
-
-var btn1Name = '';
-var btn1Value = '';
-var btn2Name = '';
-var btn2Value = '';
-var btn3Name = '';
-var btn3Value = '';
-
 export default class ImageTry extends Component {
   constructor(props) {
     super(props);
-    this.state = { uri: firstImage , time1: _time, ImageRndIndex: 0}
     setGame();
+    this.state = { uri: firstImage , time1: _time, ImageRndIndex: _ImageRndIndex,
+      btn1Name : _btn1Name,
+      btn1Value : _btn1Value,
+      btn2Name : _btn2Name,
+      btn2Value : _btn2Value,
+      btn3Name : _btn3Name,
+      btn3Value : _btn3Value,
+    
+    }
+  
   }
   
   UKAlertAskStartGame()
@@ -62,6 +73,28 @@ export default class ImageTry extends Component {
     );
   }
 
+
+   setGame()
+{
+  this.setState({
+
+  btn1Name:customData.corona.imagesUK[this.state.ImageRndIndex].btns[0].btn1,
+  btn2Name:customData.corona.imagesUK[this.state.ImageRndIndex].btns[1].btn2,
+  btn3Name:customData.corona.imagesUK[this.state.ImageRndIndex].btns[2].btn3,
+
+  btn1Value:customData.corona.imagesUK[this.state.ImageRndIndex].btns[0].value,
+  btn2Value:customData.corona.imagesUK[this.state.ImageRndIndex].btns[1].value,
+  btn3Value:customData.corona.imagesUK[this.state.ImageRndIndex].btns[2].value,
+  uri: customData.corona.imagesUK[this.state.ImageRndIndex].pathShadow
+  })
+  
+  gameHealth = 3;
+  _time = 25;
+}
+
+
+
+
    UKAlert(Title,Comment,Func)
   {
     Alert.alert(
@@ -76,7 +109,7 @@ export default class ImageTry extends Component {
 
   StartGame()
   {
-    setGame();
+    this.setGame();
     this.countdown.restartCount();
   }
 
@@ -98,7 +131,7 @@ export default class ImageTry extends Component {
 
   changeLogo() {
     this.setState({
-      uri: customData.corona.imagesUK[ImageRndIndex].pathOrjinal
+      uri: customData.corona.imagesUK[this.state.ImageRndIndex].pathOrjinal
     });
   }
   
@@ -130,7 +163,6 @@ export default class ImageTry extends Component {
       else
       {
         gameHealth--;
-        alert('wrong wrong!');
       }
         
     }
@@ -161,19 +193,19 @@ export default class ImageTry extends Component {
         </TouchableHighlight> 
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={()=> this.btnClick(btn1Value)}>
+          <TouchableOpacity onPress={()=> this.btnClick(this.state.btn1Value)}>
             <View style={styles.btnOne}>
-                <Text style={styles.buttonText}>{btn1Name}</Text>
+                <Text style={styles.buttonText}>{this.state.btn1Name}</Text>
               </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=> this.btnClick(btn2Value)}>
+          <TouchableOpacity onPress={()=> this.btnClick(this.state.btn2Value)}>
             <View style={styles.btnTwo}> 
-                <Text style={styles.buttonText}>{btn2Name}</Text>
+                <Text style={styles.buttonText}>{this.state.btn2Name}</Text>
               </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=> this.btnClick(btn3Value)}>
+          <TouchableOpacity onPress={()=> this.btnClick(this.state.btn3Value)}>
             <View style={styles.btnThree}>
-                <Text style={styles.buttonText}>{btn3Name}</Text>
+                <Text style={styles.buttonText}>{this.state.btn3Name}</Text>
               </View>
           </TouchableOpacity>
           </View>
