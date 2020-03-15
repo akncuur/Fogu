@@ -161,7 +161,7 @@ export default class ImageTry extends Component {
         </TouchableHighlight> 
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={()=> this.btnClick(this,btn1Value)}>
+          <TouchableOpacity onPress={()=> this.btnClick(btn1Value)}>
             <View style={styles.btnOne}>
                 <Text style={styles.buttonText}>{btn1Name}</Text>
               </View>
