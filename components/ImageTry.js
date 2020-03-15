@@ -1,30 +1,32 @@
 import React, { Component } from 'react';
-import { View, Image,TouchableHighlight, StyleSheet, TouchableOpacity,Text,Alert } from 'react-native';
+import { View, Image,TouchableHighlight, StyleSheet, TouchableOpacity,Text,Alert, Platform } from 'react-native';
 import Card from './Card';
 import CountdownCircle from 'react-native-countdown-circle';
 //import {NavigationContainer} from '@react-navigation/native';
 //import {createStackNavigator} from '@react-navigation/stack';
 
 
+var ImageRndIndex = 0;
+
 const customData = require('../assets/UKpath.json');
-var _time = 3;
+var _time = 25;
 
 var gameHealth = 3;
 
-var firstImage = customData.corona.imagesUK[0].pathShadow;
+var firstImage = customData.corona.imagesUK[ImageRndIndex].pathShadow;
 
 function setGame()
 {
-  btn1Name=customData.corona.imagesUK[0].btns[0].btn1;
-  btn2Name=customData.corona.imagesUK[0].btns[1].btn2;
-  btn3Name=customData.corona.imagesUK[0].btns[2].btn3;
+  btn1Name=customData.corona.imagesUK[ImageRndIndex].btns[0].btn1;
+  btn2Name=customData.corona.imagesUK[ImageRndIndex].btns[1].btn2;
+  btn3Name=customData.corona.imagesUK[ImageRndIndex].btns[2].btn3;
 
-  btn1Value=customData.corona.imagesUK[0].btns[0].value;
-  btn2Value=customData.corona.imagesUK[0].btns[1].value;
-  btn3Value=customData.corona.imagesUK[0].btns[2].value;
+  btn1Value=customData.corona.imagesUK[ImageRndIndex].btns[0].value;
+  btn2Value=customData.corona.imagesUK[ImageRndIndex].btns[1].value;
+  btn3Value=customData.corona.imagesUK[ImageRndIndex].btns[2].value;
 
   gameHealth = 3;
-  _time
+  _time = 25;
 }
 
 
@@ -39,7 +41,7 @@ var btn3Value = '';
 export default class ImageTry extends Component {
   constructor(props) {
     super(props);
-    this.state = { uri: firstImage , time1: _time}
+    this.state = { uri: firstImage , time1: _time, ImageRndIndex: 0}
     setGame();
   }
   
@@ -83,18 +85,27 @@ export default class ImageTry extends Component {
   gameHealth--;
   if(gameHealth <= 0)
   {
+    this.setState({
+      uri: customData.corona.imagesUK[0].pathOrjinal
+    });
+
     this.UKAlertAskStartGame()
+
     return;
   }
   this.UKAlert('No Answer!','You have '+gameHealth,this.countdown.restartCount)
 }
 
   changeLogo() {
-    var rnd = Math.floor(Math.random() * 4);
-    
     this.setState({
-      uri: customData.corona.imagesUK[0].pathOrjinal
+      uri: customData.corona.imagesUK[ImageRndIndex].pathOrjinal
     });
+  }
+  
+
+  GenerateRnd()
+  {
+
   }
 
   btnClick(flag)
@@ -104,13 +115,17 @@ export default class ImageTry extends Component {
         this.UKAlertAskStartGame();
         return;
       }
-
+      
       if(flag == 1)
       {
+        this.changeLogo();
         this.setState({
-          uri: customData.corona.imagesUK[0].pathOrjinal
+          ImageRndIndex: Math.floor(Math.random() * 3)
         });
-        alert('Yes it s true');
+
+        this.StartGame();
+        
+        
       }
       else
       {
@@ -146,7 +161,7 @@ export default class ImageTry extends Component {
         </TouchableHighlight> 
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={()=> this.btnClick(btn1Value)}>
+          <TouchableOpacity onPress={()=> this.btnClick(this,btn1Value)}>
             <View style={styles.btnOne}>
                 <Text style={styles.buttonText}>{btn1Name}</Text>
               </View>
@@ -191,23 +206,23 @@ const styles = StyleSheet.create({
     btnOne:{
         borderRadius:20,
         height: 50,
-        marginBottom: 5,
+        marginBottom: 7,
         alignItems: 'center',
         backgroundColor: '#2196F3'
     },
     btnTwo:{
         borderRadius:20,
         height: 50,
-        marginBottom: 5,
+        marginBottom: 7,
         alignItems: 'center',
-        backgroundColor: 'black'
+        backgroundColor: '#2196F3'
     }, 
     btnThree:{
         borderRadius:20,
         height: 50,
-        marginBottom: 5,
+        marginBottom: 7,
         alignItems: 'center',
-        backgroundColor: '#841584'
+        backgroundColor: '#2196F3'
     }, 
     buttonText:{
         
