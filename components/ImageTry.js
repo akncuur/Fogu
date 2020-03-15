@@ -25,6 +25,14 @@ var _btn3Name = '';
 var _btn3Value = '';
 
 
+function setOrjinPhoto(id)
+{
+  this.setState({
+
+    uri: customData.corona.imagesUK[id].pathOrjinal
+  })
+}
+
 function setGame()
 {
 
@@ -76,8 +84,9 @@ export default class ImageTry extends Component {
 
    setGame()
 {
+  
   this.setState({
-
+    
   btn1Name:customData.corona.imagesUK[this.state.ImageRndIndex].btns[0].btn1,
   btn2Name:customData.corona.imagesUK[this.state.ImageRndIndex].btns[1].btn2,
   btn3Name:customData.corona.imagesUK[this.state.ImageRndIndex].btns[2].btn3,
@@ -87,7 +96,6 @@ export default class ImageTry extends Component {
   btn3Value:customData.corona.imagesUK[this.state.ImageRndIndex].btns[2].value,
   uri: customData.corona.imagesUK[this.state.ImageRndIndex].pathShadow
   })
-  
   gameHealth = 3;
   _time = 25;
 }
@@ -121,7 +129,7 @@ export default class ImageTry extends Component {
     this.setState({
       uri: customData.corona.imagesUK[0].pathOrjinal
     });
-
+    
     this.UKAlertAskStartGame()
 
     return;
@@ -133,6 +141,7 @@ export default class ImageTry extends Component {
     this.setState({
       uri: customData.corona.imagesUK[this.state.ImageRndIndex].pathOrjinal
     });
+   
   }
   
 
@@ -143,6 +152,7 @@ export default class ImageTry extends Component {
 
   btnClick(flag)
     {
+      
       if(gameHealth <= 0)
       {
         this.UKAlertAskStartGame();
@@ -155,8 +165,9 @@ export default class ImageTry extends Component {
         this.setState({
           ImageRndIndex: Math.floor(Math.random() * 3)
         });
-
-        this.StartGame();
+        
+        var a= setTimeout(()=> {setOrjinPhoto,this.StartGame();},2000);
+        
         
         
       }
