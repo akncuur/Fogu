@@ -168,7 +168,7 @@ export default class ImageTry extends Component {
       {
         id = this.ImageRndIndex;
         this.changeLogo();
-        this.state.ImageRndIndex= Math.floor(Math.random() * 50);
+        this.state.ImageRndIndex= Math.floor(Math.random() * this.state.dataSource.length);
       
         
         
