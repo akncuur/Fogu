@@ -8,62 +8,69 @@ import CountdownCircle from 'react-native-countdown-circle';
 
 var _ImageRndIndex = 0;
 
-
-
-const customData = require('../assets/UKpath.json');
+var isFirst = false;
 var _time = 25;
 
 var gameHealth = 3;
+var id = 0;
+var bosData = {};
 
-var firstImage = customData.corona.imagesUK[_ImageRndIndex].pathShadow;
+var rndList = [];
 
-var _btn1Name = '';
-var _btn1Value = '';
-var _btn2Name = '';
-var _btn2Value = '';
-var _btn3Name = '';
-var _btn3Value = '';
+function getJson()
+{
+     return fetch("https://firebasestorage.googleapis.com/v0/b/ukhelp-8de3a.appspot.com/o/UKpath.json?alt=media&token=a382d951-8e9a-4296-8a97-46811934c56")
+      .then(response => response.json())
+      .then(responseJson => { 
+          bosData= responseJson.imagesUK;
+      });  
+}
 
 
 function setOrjinPhoto(id)
 {
-  this.setState({
-
-    uri: customData.corona.imagesUK[id].pathOrjinal
-  })
+  alert(id);
+  this.state.uri='https://firebasestorage.googleapis.com/v0/b/ukhelp-8de3a.appspot.com/o/'+this.state.dataSource[id].pathOrjinal+'?alt=media&token=a382d951-8e9a-4296-8a97-46811934c560';
 }
 
-function setGame()
+function changeShadow()
 {
-
-
-  _btn1Name=customData.corona.imagesUK[_ImageRndIndex].btns[0].btn1,
-  _btn2Name=customData.corona.imagesUK[_ImageRndIndex].btns[1].btn2,
-  _btn3Name=customData.corona.imagesUK[_ImageRndIndex].btns[2].btn3,
-
-  _btn1Value=customData.corona.imagesUK[_ImageRndIndex].btns[0].value,
-  _btn2Value=customData.corona.imagesUK[_ImageRndIndex].btns[1].value,
-  _btn3Value=customData.corona.imagesUK[_ImageRndIndex].btns[2].value
-  gameHealth = 3;
-  _time = 25;
+  this.setState({
+    uri:'https://firebasestorage.googleapis.com/v0/b/ukhelp-8de3a.appspot.com/o/'+this.state.dataSource[0].pathOrjinal+'?alt=media&token=a382d951-8e9a-4296-8a97-46811934c560'
+  })
+  //this.state.uri='https://firebasestorage.googleapis.com/v0/b/ukhelp-8de3a.appspot.com/o/'+this.state.dataSource[0].pathOrjinal+'?alt=media&token=a382d951-8e9a-4296-8a97-46811934c560';
 }
 
 export default class ImageTry extends Component {
   constructor(props) {
     super(props);
-    setGame();
-    this.state = { uri: firstImage , time1: _time, ImageRndIndex: _ImageRndIndex,
-      btn1Name : _btn1Name,
-      btn1Value : _btn1Value,
-      btn2Name : _btn2Name,
-      btn2Value : _btn2Value,
-      btn3Name : _btn3Name,
-      btn3Value : _btn3Value,
-    
-    }
-  
+    dataSource_= [];
+    this.state = { uri: '' , time1: _time, ImageRndIndex: _ImageRndIndex,isLoad:false,
+      btn1Name : '',
+      btn1Value : '',
+      btn2Name : '',
+      btn2Value : '',
+      btn3Name : '',
+      btn3Value : '',
+      dataSource_: []
+    };
+
+    this.componentDidMount();
   }
   
+  componentDidMount() {
+    
+    return fetch("https://firebasestorage.googleapis.com/v0/b/ukhelp-8de3a.appspot.com/o/UKpath.json?alt=media&token=a382d951-8e9a-4296-8a97-46811934c56")
+      .then(response => response.json())
+      .then(responseJson => {
+        this.setState({
+          isLoad:true,
+          dataSource: responseJson.imagesUK
+        });
+      });  
+    }
+
+
   UKAlertAskStartGame()
   {
     if(gameHealth > 0)
@@ -84,18 +91,20 @@ export default class ImageTry extends Component {
 
    setGame()
 {
-  
   this.setState({
-    
-  btn1Name:customData.corona.imagesUK[this.state.ImageRndIndex].btns[0].btn1,
-  btn2Name:customData.corona.imagesUK[this.state.ImageRndIndex].btns[1].btn2,
-  btn3Name:customData.corona.imagesUK[this.state.ImageRndIndex].btns[2].btn3,
+    btn1Name: this.state.dataSource[this.state.ImageRndIndex].btns[0].btn,
+   btn2Name:this.state.dataSource[this.state.ImageRndIndex].btns[1].btn,
+    btn3Name:this.state.dataSource[this.state.ImageRndIndex].btns[2].btn,
 
-  btn1Value:customData.corona.imagesUK[this.state.ImageRndIndex].btns[0].value,
-  btn2Value:customData.corona.imagesUK[this.state.ImageRndIndex].btns[1].value,
-  btn3Value:customData.corona.imagesUK[this.state.ImageRndIndex].btns[2].value,
-  uri: customData.corona.imagesUK[this.state.ImageRndIndex].pathShadow
-  })
+  btn1Value:this.state.dataSource[this.state.ImageRndIndex].btns[0].value,
+  btn2Value:this.state.dataSource[this.state.ImageRndIndex].btns[1].value,
+  btn3Value:this.state.dataSource[this.state.ImageRndIndex].btns[2].value,
+  
+  uri:'https://firebasestorage.googleapis.com/v0/b/ukhelp-8de3a.appspot.com/o/'+this.state.dataSource[this.state.ImageRndIndex].pathShadow+'?alt=media&token=a382d951-8e9a-4296-8a97-46811934c560'
+});
+  
+  
+  
   gameHealth = 3;
   _time = 25;
 }
@@ -117,6 +126,7 @@ export default class ImageTry extends Component {
 
   StartGame()
   {
+   
     this.setGame();
     this.countdown.restartCount();
   }
@@ -127,7 +137,7 @@ export default class ImageTry extends Component {
   if(gameHealth <= 0)
   {
     this.setState({
-      uri: customData.corona.imagesUK[0].pathOrjinal
+      uri: this.state.dataSource[0].pathOrjinal
     });
     
     this.UKAlertAskStartGame()
@@ -139,20 +149,15 @@ export default class ImageTry extends Component {
 
   changeLogo() {
     this.setState({
-      uri: customData.corona.imagesUK[this.state.ImageRndIndex].pathOrjinal
+      uri: 'https://firebasestorage.googleapis.com/v0/b/ukhelp-8de3a.appspot.com/o/'+this.state.dataSource[this.state.ImageRndIndex].pathOrjinal+'?alt=media&token=a382d951-8e9a-4296-8a97-46811934c560'
     });
-   
   }
   
 
-  GenerateRnd()
-  {
 
-  }
 
   btnClick(flag)
     {
-      
       if(gameHealth <= 0)
       {
         this.UKAlertAskStartGame();
@@ -161,10 +166,11 @@ export default class ImageTry extends Component {
       
       if(flag == 1)
       {
+        id = this.ImageRndIndex;
         this.changeLogo();
-        this.setState({
-          ImageRndIndex: Math.floor(Math.random() * 3)
-        });
+        this.state.ImageRndIndex= Math.floor(Math.random() * 50);
+      
+        
         
         var a= setTimeout(()=> {setOrjinPhoto,this.StartGame();},2000);
         
@@ -179,6 +185,11 @@ export default class ImageTry extends Component {
     }
 
   render() {
+      if(this.state.isLoad && isFirst == false)
+      {
+        this.setGame();
+        isFirst= true;
+      }
     return (
       <View style={styles.screen}>
         <Card style={styles.inputContainer}>
