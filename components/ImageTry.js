@@ -172,7 +172,7 @@ export default class ImageTry extends Component {
       
         
         
-        var a= setTimeout(()=> {setOrjinPhoto,this.StartGame();},2000);
+        var a= setTimeout(()=> {setOrjinPhoto,this.StartGame();},500);
         
         
         
