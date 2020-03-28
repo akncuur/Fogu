@@ -209,7 +209,7 @@ export default class ImageTry extends Component {
        <TouchableHighlight underlayColor="white" onPress={() => this.UKAlertAskStartGame()}>
             <Image
                 source={{uri: this.state.uri}}
-                style={{width: '100%', height: 300}}
+                style={{width: '100%', height: 350}}
                 resizeMode={'center'}
             />
         </TouchableHighlight> 
