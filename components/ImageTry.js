@@ -60,14 +60,20 @@ export default class ImageTry extends Component {
   
   componentDidMount() {
     
-    return fetch("https://firebasestorage.googleapis.com/v0/b/ukhelp-8de3a.appspot.com/o/UKpath.json?alt=media&token=a382d951-8e9a-4296-8a97-46811934c56")
+    
+   return fetch("https://firebasestorage.googleapis.com/v0/b/ukhelp-8de3a.appspot.com/o/UKpath.json?alt=media",{method: "GET"})
       .then(response => response.json())
       .then(responseJson => {
         this.setState({
           isLoad:true,
           dataSource: responseJson.imagesUK
-        });
-      });  
+          
+        })
+      }).catch(function(error) {
+        alert('There has been a problem with your fetch operation: ' + error.message);
+         // ADD THIS THROW error
+          throw error;
+        });;  
     }
 
 
@@ -210,7 +216,7 @@ export default class ImageTry extends Component {
             <Image
                 source={{uri: this.state.uri}}
                 style={{width: '100%', height: 350}}
-                resizeMode={'center'}
+                resizeMode={'contain'}
             />
         </TouchableHighlight> 
 
