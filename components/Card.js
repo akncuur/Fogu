@@ -10,17 +10,19 @@ const Card= props => {
 
 const styles = StyleSheet.create({
     card:{
-        width:400,
-        maxWidth: '95%',
+        width:'100%',
+        height: '100%',
+        maxWidth: '100%',
         alignItems: 'stretch',
-        shadowColor: 'black',
+       /* shadowColor: 'black',
         shadowOffset: {width: 0, height: 2},
         shadowRadius: 6,
-        shadowOpacity: 0.26,
+        shadowOpacity: 0.26,*/
         elevation: 8,
         backgroundColor: 'white',
         padding:0,
         borderRadius: 10,
+        resizeMode : 'contain'
       },
 
 });

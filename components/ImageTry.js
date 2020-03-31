@@ -45,13 +45,16 @@ export default class ImageTry extends Component {
   constructor(props) {
     super(props);
     dataSource_= [];
-    this.state = { uri: '' , time1: _time, ImageRndIndex: _ImageRndIndex,isLoad:false,
+    this.state = { uri: '' ,original_uri: '', time1: _time, ImageRndIndex: _ImageRndIndex,isLoad:false,
       btn1Name : '',
       btn1Value : '',
       btn2Name : '',
       btn2Value : '',
       btn3Name : '',
       btn3Value : '',
+      btncolourdefault_1: '#48d7db',
+      btncolourdefault_2: '#48d7db',
+      btncolourdefault_3: '#48d7db',
       dataSource_: []
     };
 
@@ -84,11 +87,10 @@ export default class ImageTry extends Component {
     return;
   }
     Alert.alert(
-      'Play Again ?',
-      'My A',
+      'Please press "FOGU" to continue.',
+      '',
       [
-        {text: 'Yes', onPress: () => this.StartGame()},
-        {text: 'No', onPress:''},
+        {text: 'FOGU', onPress: () => this.StartOver()},
       ],
       {cancelable: false},
     );
@@ -99,20 +101,21 @@ export default class ImageTry extends Component {
 {
   this.setState({
     btn1Name: this.state.dataSource[this.state.ImageRndIndex].btns[0].btn,
-   btn2Name:this.state.dataSource[this.state.ImageRndIndex].btns[1].btn,
+    btn2Name:this.state.dataSource[this.state.ImageRndIndex].btns[1].btn,
     btn3Name:this.state.dataSource[this.state.ImageRndIndex].btns[2].btn,
 
   btn1Value:this.state.dataSource[this.state.ImageRndIndex].btns[0].value,
   btn2Value:this.state.dataSource[this.state.ImageRndIndex].btns[1].value,
   btn3Value:this.state.dataSource[this.state.ImageRndIndex].btns[2].value,
   
-  uri:'https://firebasestorage.googleapis.com/v0/b/ukhelp-8de3a.appspot.com/o/'+this.state.dataSource[this.state.ImageRndIndex].pathShadow+'?alt=media&token=a382d951-8e9a-4296-8a97-46811934c560'
+  uri:'https://firebasestorage.googleapis.com/v0/b/ukhelp-8de3a.appspot.com/o/'+this.state.dataSource[this.state.ImageRndIndex].pathShadow+'?alt=media&token=a382d951-8e9a-4296-8a97-46811934c560',
+  original_uri:'https://firebasestorage.googleapis.com/v0/b/ukhelp-8de3a.appspot.com/o/'+this.state.dataSource[this.state.ImageRndIndex].pathOrjinal+'?alt=media&token=a382d951-8e9a-4296-8a97-46811934c560'
 });
   
   
   
-  gameHealth = 3;
-  _time = 25;
+ //gameHealth = 3;
+  _time = 15; //Çok fazla.
 }
 
 
@@ -135,6 +138,22 @@ export default class ImageTry extends Component {
    
     this.setGame();
     this.countdown.restartCount();
+    //gameHealth= 3;
+    this.setState({btncolourdefault_1:'#48d7db',
+    btncolourdefault_2:'#48d7db',
+    btncolourdefault_3:'#48d7db'});                                    
+  }
+
+  StartOver()
+  {
+   
+    this.setGame();
+    this.countdown.restartCount();
+    gameHealth= 3;
+    this.setState({btncolourdefault_1:'#48d7db',
+    btncolourdefault_2:'#48d7db',
+    btncolourdefault_3:'#48d7db'});
+                                          
   }
 
   GameOver()
@@ -155,39 +174,49 @@ export default class ImageTry extends Component {
 
   changeLogo() {
     this.setState({
-      uri: 'https://firebasestorage.googleapis.com/v0/b/ukhelp-8de3a.appspot.com/o/'+this.state.dataSource[this.state.ImageRndIndex].pathOrjinal+'?alt=media&token=a382d951-8e9a-4296-8a97-46811934c560'
+      uri: this.state.original_uri
     });
   }
   
 
 
 
-  btnClick(flag)
+  btnClick(flag,orderNo)
     {
-      if(gameHealth <= 0)
-      {
-        this.UKAlertAskStartGame();
-        return;
-      }
-      
       if(flag == 1)
       {
+        if(orderNo==1){
+          this.setState({btncolourdefault_1:'green'})
+          
+        }
+        if(orderNo==2){
+          this.setState({btncolourdefault_2:'green'})
+        }   
+        if(orderNo==3){
+          this.setState({btncolourdefault_3:'green'})
+        }
+
         id = this.ImageRndIndex;
         this.changeLogo();
         this.state.ImageRndIndex= Math.floor(Math.random() * this.state.dataSource.length);
-      
-        
-        
-        var a= setTimeout(()=> {setOrjinPhoto,this.StartGame();},500);
-        
-        
-        
+
+        var a= setTimeout(()=> {setOrjinPhoto,this.StartGame();},800);
+       /* this.setState({btncolourdefault_1:'#48d7db',
+        btncolourdefault_2:'#48d7db',
+        btncolourdefault_3:'#48d7db'});
+                                          */
+
       }
       else
       {
         gameHealth--;
+        if(gameHealth <= 0)
+      {
+        this.UKAlertAskStartGame();
+        return;
       }
-        
+      }
+      
     }
 
   render() {
@@ -221,18 +250,18 @@ export default class ImageTry extends Component {
         </TouchableHighlight> 
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={()=> this.btnClick(this.state.btn1Value)}>
-            <View style={styles.btnOne}>
+          <TouchableOpacity onPress={()=> this.btnClick(this.state.btn1Value,1)}>
+            <View style={[styles.btnOne, {backgroundColor: this.state.btncolourdefault_1}]}>
                 <Text style={styles.buttonText}>{this.state.btn1Name}</Text>
               </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=> this.btnClick(this.state.btn2Value)}>
-            <View style={styles.btnTwo}> 
+          <TouchableOpacity onPress={()=> this.btnClick(this.state.btn2Value,2)}>
+            <View style={[styles.btnTwo, {backgroundColor: this.state.btncolourdefault_2}]}> 
                 <Text style={styles.buttonText}>{this.state.btn2Name}</Text>
               </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=> this.btnClick(this.state.btn3Value)}>
-            <View style={styles.btnThree}>
+          <TouchableOpacity onPress={()=> this.btnClick(this.state.btn3Value,3)}>
+            <View style={[styles.btnThree, {backgroundColor: this.state.btncolourdefault_3}]}>
                 <Text style={styles.buttonText}>{this.state.btn3Name}</Text>
               </View>
           </TouchableOpacity>
@@ -261,6 +290,7 @@ const styles = StyleSheet.create({
     button: {
         marginBottom: '25%',
         alignItems: 'center',
+        justifyContent: 'center'
       },
     
     btnOne:{
@@ -268,28 +298,48 @@ const styles = StyleSheet.create({
         height: 50,
         marginBottom: 7,
         alignItems: 'center',
-        backgroundColor: '#2196F3'
+        justifyContent: 'center',
+        
     },
     btnTwo:{
         borderRadius:20,
         height: 50,
         marginBottom: 7,
         alignItems: 'center',
-        backgroundColor: '#2196F3'
+        justifyContent: 'center',
+        
     }, 
     btnThree:{
         borderRadius:20,
         height: 50,
         marginBottom: 7,
         alignItems: 'center',
-        backgroundColor: '#2196F3'
-    }, 
+        justifyContent: 'center',
+      //  backgroundColor:  this.state.btncolourdefault_3
+    },
+    btnstyle:{
+      borderRadius:20,
+      height: 50,
+      marginBottom: 7,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#48d7db'
+      
+  },
+    btnstylecorrect:{
+    borderRadius:20,
+    height: 50,
+    marginBottom: 7,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'green'
+},
     buttonText:{
         
         color: 'white',
         textAlign:'center',
         padding:10,
-        fontSize:18,
+        fontSize:25,
     },
 
     thumbnail: {

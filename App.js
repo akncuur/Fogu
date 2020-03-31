@@ -9,7 +9,7 @@ export default function App() {
   return (
 
     <View style={styles.screen}>
-      <Header title='Welcome to Game' />
+      <Header/>
       <ImageTry ></ImageTry>
     </View>
   );
