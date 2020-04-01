@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
         elevation: 8,
         backgroundColor: 'white',
         padding:0,
-        borderRadius: 10,
         resizeMode : 'contain'
       },
 

@@ -138,10 +138,10 @@ export default class ImageTry extends Component {
    
     this.setGame();
     this.countdown.restartCount();
-    //gameHealth= 3;
+    //48d7db  ;
     this.setState({btncolourdefault_1:'#48d7db',
     btncolourdefault_2:'#48d7db',
-    btncolourdefault_3:'#48d7db'});                                    
+    btncolourdefault_3:'#48d7db'});                                   
   }
 
   StartOver()
@@ -186,14 +186,14 @@ export default class ImageTry extends Component {
       if(flag == 1)
       {
         if(orderNo==1){
-          this.setState({btncolourdefault_1:'green'})
+          this.setState({btncolourdefault_1:'#7ed957'})
           
         }
         if(orderNo==2){
-          this.setState({btncolourdefault_2:'green'})
+          this.setState({btncolourdefault_2:'#7ed957'})
         }   
         if(orderNo==3){
-          this.setState({btncolourdefault_3:'green'})
+          this.setState({btncolourdefault_3:'#7ed957'})
         }
 
         id = this.ImageRndIndex;
@@ -210,6 +210,16 @@ export default class ImageTry extends Component {
       else
       {
         gameHealth--;
+        if(orderNo==1){
+          this.setState({btncolourdefault_1:'#ff1616'})
+          
+        }
+        if(orderNo==2){
+          this.setState({btncolourdefault_2:'#ff1616'})
+        }   
+        if(orderNo==3){
+          this.setState({btncolourdefault_3:'#ff1616'})
+        }
         if(gameHealth <= 0)
       {
         this.UKAlertAskStartGame();
@@ -299,6 +309,8 @@ const styles = StyleSheet.create({
         marginBottom: 7,
         alignItems: 'center',
         justifyContent: 'center',
+        alignSelf: 'center',
+        width:'75%',
         
     },
     btnTwo:{
@@ -307,6 +319,8 @@ const styles = StyleSheet.create({
         marginBottom: 7,
         alignItems: 'center',
         justifyContent: 'center',
+        alignSelf: 'center',
+        width:'75%',
         
     }, 
     btnThree:{
@@ -315,6 +329,8 @@ const styles = StyleSheet.create({
         marginBottom: 7,
         alignItems: 'center',
         justifyContent: 'center',
+        alignSelf: 'center',
+        width:'75%',
       //  backgroundColor:  this.state.btncolourdefault_3
     },
     btnstyle:{
