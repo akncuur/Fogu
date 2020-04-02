@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { View, Image,TouchableHighlight, StyleSheet, TouchableOpacity,Text,Alert, Platform } from 'react-native';
 import Card from './Card';
 import CountdownCircle from 'react-native-countdown-circle';
-//import {NavigationContainer} from '@react-navigation/native';
-//import {createStackNavigator} from '@react-navigation/stack';
+import { Audio } from 'expo-av';
+
 
 
 var _ImageRndIndex = 0;
-
+var defaulLink ='https://firebasestorage.googleapis.com/v0/b/ukhelp-8de3a.appspot.com/o/';
 var isFirst = false;
-var _time = 25;
+var _time = 20;
 
 var gameHealth = 3;
 var id = 0;
@@ -19,7 +19,7 @@ var rndList = [];
 
 function getJson()
 {
-     return fetch("https://firebasestorage.googleapis.com/v0/b/ukhelp-8de3a.appspot.com/o/UKpath.json?alt=media&token=a382d951-8e9a-4296-8a97-46811934c56")
+     return fetch(defaulLink+"UKpath.json?alt=media")
       .then(response => response.json())
       .then(responseJson => { 
           bosData= responseJson.imagesUK;
@@ -30,15 +30,14 @@ function getJson()
 function setOrjinPhoto(id)
 {
   alert(id);
-  this.state.uri='https://firebasestorage.googleapis.com/v0/b/ukhelp-8de3a.appspot.com/o/'+this.state.dataSource[id].pathOrjinal+'?alt=media&token=a382d951-8e9a-4296-8a97-46811934c560';
+  this.state.uri=defaulLink+this.state.dataSource[id].pathOrjinal+'?alt=media';
 }
 
 function changeShadow()
 {
   this.setState({
-    uri:'https://firebasestorage.googleapis.com/v0/b/ukhelp-8de3a.appspot.com/o/'+this.state.dataSource[0].pathOrjinal+'?alt=media&token=a382d951-8e9a-4296-8a97-46811934c560'
+    uri:defaulLink+this.state.dataSource[0].pathOrjinal+'?alt=media'
   })
-  //this.state.uri='https://firebasestorage.googleapis.com/v0/b/ukhelp-8de3a.appspot.com/o/'+this.state.dataSource[0].pathOrjinal+'?alt=media&token=a382d951-8e9a-4296-8a97-46811934c560';
 }
 
 export default class ImageTry extends Component {
@@ -64,7 +63,7 @@ export default class ImageTry extends Component {
   componentDidMount() {
     
     
-   return fetch("https://firebasestorage.googleapis.com/v0/b/ukhelp-8de3a.appspot.com/o/UKpath.json?alt=media",{method: "GET"})
+   return fetch(defaulLink+"UKpath.json?alt=media",{method: "GET"})
       .then(response => response.json())
       .then(responseJson => {
         this.setState({
@@ -108,14 +107,9 @@ export default class ImageTry extends Component {
   btn2Value:this.state.dataSource[this.state.ImageRndIndex].btns[1].value,
   btn3Value:this.state.dataSource[this.state.ImageRndIndex].btns[2].value,
   
-  uri:'https://firebasestorage.googleapis.com/v0/b/ukhelp-8de3a.appspot.com/o/'+this.state.dataSource[this.state.ImageRndIndex].pathShadow+'?alt=media&token=a382d951-8e9a-4296-8a97-46811934c560',
-  original_uri:'https://firebasestorage.googleapis.com/v0/b/ukhelp-8de3a.appspot.com/o/'+this.state.dataSource[this.state.ImageRndIndex].pathOrjinal+'?alt=media&token=a382d951-8e9a-4296-8a97-46811934c560'
+  uri:defaulLink+this.state.dataSource[this.state.ImageRndIndex].pathShadow+'?alt=media',
+  original_uri:defaulLink+this.state.dataSource[this.state.ImageRndIndex].pathOrjinal+'?alt=media'
 });
-  
-  
-  
- //gameHealth = 3;
-  _time = 15; //Çok fazla.
 }
 
 
@@ -153,6 +147,9 @@ export default class ImageTry extends Component {
     this.setState({btncolourdefault_1:'#48d7db',
     btncolourdefault_2:'#48d7db',
     btncolourdefault_3:'#48d7db'});
+    this.setState({
+      time1:20
+    })
                                           
   }
 
@@ -177,14 +174,36 @@ export default class ImageTry extends Component {
       uri: this.state.original_uri
     });
   }
+  async CalKeke(statu)
+  {
   
-
+    try {
+      const soundObject = new Audio.Sound();
+       if(statu)
+       {
+        await soundObject.loadAsync(require('../assets/correct.mp3'));
+       }
+       if(!statu){
+        await soundObject.loadAsync(require('../assets/false.mp3'));
+       }
+       
+       await soundObject.playAsync();
+      // Your sound is playing!
+    } catch (error) {
+      // An error occurred!
+    }
+  
+  }
+  
 
 
   btnClick(flag,orderNo)
     {
       if(flag == 1)
       {
+        
+        this.CalKeke(true);
+     
         if(orderNo==1){
           this.setState({btncolourdefault_1:'#7ed957'})
           
@@ -200,15 +219,14 @@ export default class ImageTry extends Component {
         this.changeLogo();
         this.state.ImageRndIndex= Math.floor(Math.random() * this.state.dataSource.length);
 
-        var a= setTimeout(()=> {setOrjinPhoto,this.StartGame();},800);
-       /* this.setState({btncolourdefault_1:'#48d7db',
-        btncolourdefault_2:'#48d7db',
-        btncolourdefault_3:'#48d7db'});
-                                          */
-
+        var waitfororjinphoto= setTimeout(()=> {setOrjinPhoto,this.StartGame();},800);
+        this.setState({
+          time1:Math.floor(this.state.time1*0.95)
+        })
       }
       else
       {
+        this.CalKeke(false);
         gameHealth--;
         if(orderNo==1){
           this.setState({btncolourdefault_1:'#ff1616'})
