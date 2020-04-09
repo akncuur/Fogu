@@ -9,23 +9,10 @@ import { Audio } from 'expo-av';
 var _ImageRndIndex = 0;
 var defaulLink ='https://firebasestorage.googleapis.com/v0/b/ukhelp-8de3a.appspot.com/o/';
 var isFirst = false;
-var _time = 20;
+var _time = 5;
 
 var gameHealth = 3;
 var id = 0;
-var bosData = {};
-
-var rndList = [];
-
-function getJson()
-{
-     return fetch(defaulLink+"UKpath.json?alt=media")
-      .then(response => response.json())
-      .then(responseJson => { 
-          bosData= responseJson.imagesUK;
-      });  
-}
-
 
 function setOrjinPhoto(id)
 {
@@ -33,15 +20,14 @@ function setOrjinPhoto(id)
   this.state.uri=defaulLink+this.state.dataSource[id].pathOrjinal+'?alt=media';
 }
 
-function changeShadow()
-{
-  this.setState({
-    uri:defaulLink+this.state.dataSource[0].pathOrjinal+'?alt=media'
-  })
-}
+
 
 export default class ImageTry extends Component {
+  
   constructor(props) {
+    ImageTry.navigationOptions={
+      headerShown:false}
+    if(isFirst) {isFirst = false;};
     super(props);
     dataSource_= [];
     this.state = { uri: '' ,original_uri: '', time1: _time, ImageRndIndex: _ImageRndIndex,isLoad:false,
@@ -56,8 +42,7 @@ export default class ImageTry extends Component {
       btncolourdefault_3: '#48d7db',
       dataSource_: []
     };
-
-    this.componentDidMount();
+    
   }
   
   componentDidMount() {
@@ -98,7 +83,9 @@ export default class ImageTry extends Component {
 
    setGame()
 {
+  
   this.setState({
+    
     btn1Name: this.state.dataSource[this.state.ImageRndIndex].btns[0].btn,
     btn2Name:this.state.dataSource[this.state.ImageRndIndex].btns[1].btn,
     btn3Name:this.state.dataSource[this.state.ImageRndIndex].btns[2].btn,
@@ -148,7 +135,7 @@ export default class ImageTry extends Component {
     btncolourdefault_2:'#48d7db',
     btncolourdefault_3:'#48d7db'});
     this.setState({
-      time1:20
+      time1: 5
     })
                                           
   }
@@ -195,7 +182,12 @@ export default class ImageTry extends Component {
   
   }
   
+  getRemainTime(){
+    this.setState({
+      time1: this.state.time1+2
+    })
 
+  }
 
   btnClick(flag,orderNo)
     {
@@ -220,9 +212,7 @@ export default class ImageTry extends Component {
         this.state.ImageRndIndex= Math.floor(Math.random() * this.state.dataSource.length);
 
         var waitfororjinphoto= setTimeout(()=> {setOrjinPhoto,this.StartGame();},800);
-        this.setState({
-          time1:Math.floor(this.state.time1*0.95)
-        })
+        this.getRemainTime();
       }
       else
       {
@@ -248,6 +238,7 @@ export default class ImageTry extends Component {
     }
 
   render() {
+   
       if(this.state.isLoad && isFirst == false)
       {
         this.setGame();

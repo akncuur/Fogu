@@ -17,7 +17,7 @@ header:{
     width: '100%',
     height: 30,
     paddingTop: 5,
-    backgroundColor: '#48d7db',
+    backgroundColor: '#38b6ff',
     alignItems: 'center',
     justifyContent: 'center'
 
